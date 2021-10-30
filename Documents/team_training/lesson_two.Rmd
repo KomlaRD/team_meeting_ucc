@@ -1,0 +1,209 @@
+---
+title: "R TUTORIALS LESSON TWO"
+author: "Eric Anku"
+date: "10/30/2021"
+output:
+  prettydoc::html_pretty:
+          theme: cayman
+          highlight: github
+          toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r echo=FALSE}
+# Load/install packages
+
+pacman::p_load(
+        tidyverse, # Data management, analysis, plotting
+        here, # Working directory
+        rio, # Import and export dataset
+        skimr, # Skimming dataset
+        GGally, # Correlation matrix
+        gtsummary # Table summaries
+)
+```
+
+## LESSON ONE REVIEW
+
+
+## Introduction
+
+In our last meeting on 17th October, 2021, you were introduced to R and R studio. We learnt how to install packages using `install.packages()` eg. `install.packages("tidyverse")`. Note that the name of the package is placed between two quotation marks. 
+
+We also learnt that before we begin working, we will need to load our packages. We were introducted to `library(package name)` eg. library(tidyverse). Note that quotation marks are not used in the library function.
+
+Functions are part of packages and are more like the action words which instruct R on what to do by stating arguments within its parentheses. So, `install.packages` and `library` are functions. Tidyverse is made of several functions including `read_csv()` which we used in importing the cancer dataset from last week.
+
+### Importing dataset
+
+Our workflow from last week included setting our working directory. We used `setwd()` to set our working directory. An example is `setwd("/Documents/team_meeting")`. We will introduce another efficient way to set our working directory in this lesson. We used the **Import dataset** option in the **Environment** tab to import our dataset into R. Thereafter, we copied the code used to import the dataset into our **R script**. 
+In this lesson, we will be introduced to the `rio` package and the `import()`
+function from the `rio` package to import our dataset.
+ 
+
+```{r import-data}
+cancer_data <- import (here("data","cancer_data.csv")) # This code imports the cancer dataset and assigns it to the object name cancer data. More on this code below.
+```
+
+
+ 
+ **Summary**
+ 
+ 
+A workflow introduced in our previous lesson included getting the data, importing the data, inspecting and exploring the data.
+ 
+ 
+### Inspecting and exploring data
+
+
+We were introduced to `glimpse()` and `skimr::skim()` to glimpse and skim our dataset respectively.
+
+
+
+```{r glimpse}
+glimpse(cancer_data) # Be sure to use the object name you specified whiles importing your dataset
+```
+
+
+
+```{r skim-cancer-data}
+skim(cancer_data) # Skim cancer dataset
+```
+
+
+ 
+ 
+### Introduction to R markdown
+
+R markdown was briefly introduced. We learnt about code chunks, knitting R markdown documents and using the # to specify headings. Note that # means heading one, ## means heading 2, ### means heading 3 and so on. Note that the headings range from one to six. To learn more about R markdown, visit the [R markdown book](https://bookdown.org/yihui/rmarkdown/).
+
+
+## Lesson two
+
+
+### Set up a github account and connect it with R studio
+
+
+Visit [Github](https://github.com/) and sign up for an account. Open git bash and type out `git config --global user.name "Replace with your username"`. Then type out `git config --global user.email "your email here"`. Note that the username and email are those associated with your github account. You can learn about this step from this [book chapter](https://happygitwithr.com/hello-git.html)
+
+Now open R studio. Click on **Tools** in the menu bar. Then click on **Global options**. Click on **Git/SVN** and create an RSA key. View the **Public key** created and copy it. 
+
+Go back to your **github account** and copy and paste the public key. Name the key as **RStudio**
+
+You are good to go. You have created a github account and connected it with RStudio.
+
+### Creating an R project
+
+
+Now we are about to begin a project which will be the working directory for our meetings. Click on **File**, then **New Project**. _NB there are other ways of starting a project aside this step_. Select **Version Control**, then **Git**. Before you go ahead, create a **New repository** on **Github** and then copy the **url**. Paste this url in **RStudio**. Then create an appropriate folder for your project. 
+
+
+### Pacman and here package
+
+
+Install the pacman and here packages using the following code `install.packages(c("pacman","here"))`. This code include **c** to enable us to install more than one package. 
+
+
+### Use pacman to install and load packages
+
+
+Previously, we used `library()` to load our packages. This time around, we are going to use `pacman()` to do both installation and loading of packages at the same time. Note that pacman will not install packages you have already installed. It will load them in your R session. Write the following code to install/load the following packages. Remember that there are different ways of achieving things in R. As you advance your learning in R, you may find effecient ways of doing your own things.
+
+
+
+```{r packages, eval=FALSE}
+# Load/install packages
+
+pacman::p_load(
+        tidyverse, # Data management, analysis, plotting
+        here, # Working directory
+        rio, # Import and export dataset
+        skimr, # Skimming dataset
+        GGally, # Correlation matrix
+        gtsummary # Table summaries
+)
+```
+
+
+
+
+Note that in the above code, we used the `p_load()` from the pacman package to install/load packages. This code used `pacman::` to call out a function. When two colons are used after a package, the functions available in the package can be selected. Example, instead of loading `skimr` before using `skim(dataset)`. We can type `skimr::skim(dataset)`. For best practices, it may be helpful to load your packages like we have done above before getting to work.
+
+
+
+## Import cancer dataset using import and here functions
+
+
+`here()` is a function from the `here` package. `import()` function is from the `rio` package. You can use `here()` to find your current working directory. Instead of using the `setwd()` like before, we will import our data set relative to our current working directory.
+
+Use the following code: `import(here("data","cancer_data.csv"))`. Be mindful of the parentheses as you code. The code is saying literally: import my dataset (**cancer_data.csv**) from the data folder in my current working directory. 
+
+The import code is assuming that you have a **data** folder insider your project folder. _NB folder, repository, and directory mean are used "interchangeably"_. More about that in subsequent meetings.
+
+
+*Bonus content*
+
+
+Use **git bash** to create a directory known as **data** in your project folder. But before that, you would have to change directory into your project folder. By default, git bash starts from your root directory. Use the command **cd** to change directory into your project folder. Assuming my project folder is named **eric** and it is located inside **Documents**, then I would type `cd Documents/eric` This will lead me to my project folder. The name of the project folder will be indicated in git bash. Use **pwd** to confirm your current working directory. If you are in your project folder, then use **mkdir** to create a new directory inside your project directory. The code will be `mkdir data`. Learn more about the command line from this [free course from udacity](https://www.udacity.com/course/linux-command-line-basics--ud595). Note that I used the word command line but think about this as your git bash console. 
+
+Copy and paste the cancer dataset inside the data folder. Thereafter, type out the import code suggested above to import the dataset. _NB you need to assign the code to an object to save it into memory. eg. eric <- import(here("data"."cancer_data.csv")). Also, the command line can be used to move files (try and explore this if you are curios enough (`smile:`)_ 
+
+
+Learn more about absolute and relative paths from [here](https://excelquick.com/r-programming/importing-data-absolute-and-relative-file-paths-in-r/) and [here](https://www.dummies.com/programming/r/how-to-work-with-files-and-folders-in-r/)
+
+
+
+## Create a table summary for the dataset
+
+
+We will look at how to tweak this table subsequently. Look at the output and try and think about the results obtained.
+
+
+```{r table-summary}
+tbl_summary(cancer_data) # Create a table summary of cancer data
+```
+
+
+
+## Create a basic plot using ggplot2
+
+
+The following scatterplot was created with **age** and **bmi** variable from the cancer dataset. The plot needs a bit of tweaking to improve on its appearance. However a basic plot with **ggplot2** (_NB: this is part of the tidyverse packages_) requires a `ggplot()` function + the type of graph you are making. `geom_point()` in the code pertains to a scatter plot. Check out various **cheatsheets** from [RStudio](https://www.rstudio.com/resources/cheatsheets/) and download that of **ggplot2**. This may be a handy reference to check things out from time to time. Within the `ggplot()` function, the arguments used include data, the "aesthetics" shortened as `aes()`.
+
+
+
+```{r plot}
+ggplot(cancer_data, aes(x=age, y=bmi, color=factor(gender))) +
+  geom_point()   # Scatterplot
+```
+
+
+
+We will spend some time looking at ggplot2 later. However, you can read more about it from [this chapter from our selected book for this meeting](https://argoshare.is.ed.ac.uk/healthyr_book/chap04-h1.html).
+
+
+
+## Push your final output to github
+
+
+After you are done **knitting** the document, push it into your github repository using **git bash**.
+
+Make sure you are in your project folder. Then, use `git add name_of_your_output.html` to add the html output from R markdown.
+
+Then use git commit to add a commit message with the file you are about to push into github. The code will look like this `git commit -m "This is my project output"`. Then hit on **enter**. After, use `git push` to push the file into github. Be sure you are connected to the internet. 
+
+Copy your github repository and share the link with me to see your output.
+
+Learn more about git and github for free from this [udacity course on command line basics](https://www.udacity.com/course/linux-command-line-basics--ud595), [version control with git](https://www.udacity.com/course/version-control-with-git--ud123) and this [book](https://happygitwithr.com/index.html).
+
+
+## Looking forward
+
+At our next meeting, we will look at transforming variables in the cancer dataset, creating useful table summaries and plots, and possibly look at statistical inference in brief. We will use **ODK** to create our own data questionnaire and start a data project all by ourselves. You can view the source code for this [lesson notes on github](https://github.com/KomlaRD/team_meeting_ucc.git).
+
+
